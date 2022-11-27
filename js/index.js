@@ -22,38 +22,32 @@ const slides = [
 const [prevBtn, nextBtn] = document.querySelectorAll('button');
 const sliderImg = document.querySelector('.sliderWrapper img');
 
-let currentSlideIndex = 0;
+try {
+  const slider = new Slider(slides, 10);
 
-updateSlider(currentSlideIndex);
+  updateSlider(slider.currentSlide);
 
-prevBtn.onclick = prevBtnHandler;
-nextBtn.onclick = nextBtnHandler;
+  prevBtn.onclick = prevBtnHandler;
+  nextBtn.onclick = nextBtnHandler;
 
-function prevBtnHandler() {
-  // if (currentSlideIndex > 0) {
-  //   currentSlideIndex--;
-  // } else {
-  //   currentSlideIndex = slides.length - 1;
-  // }
-  currentSlideIndex = (currentSlideIndex - 1 + slides.length) % slides.length;
-  updateSlider(currentSlideIndex);
-}
+  function prevBtnHandler() {
+    slider.decSlideIndex();
+    updateSlider(slider.currentSlide);
+  }
 
-function nextBtnHandler() {
-  // if (currentSlideIndex < slides.length - 1) {
-  //   currentSlideIndex++;
-  // } else {
-  //   currentSlideIndex = 0;
-  // }
-  currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-  updateSlider(currentSlideIndex);
-}
+  function nextBtnHandler() {
+    slider.incSlideIndex();
+    updateSlider(slider.currentSlide);
+  }
 
-function updateSlider(currentSlideIndex) {
-  sliderImg.src = slides[currentSlideIndex].src;
-  sliderImg.alt = slides[currentSlideIndex].alt;
+  function updateSlider(currentSlide) {
+    sliderImg.src = currentSlide.src;
+    sliderImg.alt = currentSlide.alt;
 
-  sliderImg.onerror = () => {
-    sliderImg.src = './../images/defaultSlide.jpeg';
-  };
+    sliderImg.onerror = () => {
+      sliderImg.src = './../images/defaultSlide.jpeg';
+    };
+  }
+} catch (e) {
+  sliderImg.src = './../images/defaultSlide.jpeg';
 }
